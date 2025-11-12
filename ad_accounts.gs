@@ -32,7 +32,7 @@ async function getAdAccounts(businessID, accessToken) {
 
 async function setAdAccounts(businessID, accessToken) {
   const data = await getAdAccounts(businessID, accessToken)
-  const result = [Object.keys(data[0]), ...data.map(r => Object.values(r))]
+  const result = data.map(r => Object.values(r))
   setData("ad_accounts", result)
   return data
 }

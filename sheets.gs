@@ -9,15 +9,21 @@ const SHEET_CONFIGS = {
   },
   "ad_insights": {
     "mode": "append",
-    "e_col": "M",
-    unique_col: [1, 2, 3, 4, 5, 6]
+    "e_col": "N",
+    unique_col: [1]
   },
   "ad_action_insights": {
     "mode": "append",
-    "e_col": "K",
-    unique_col: [1, 2, 3, 4, 5, 6,7]
+    "e_col": "L",
+    unique_col: [1, 8]
   }
 }
+
+function makeKey(input) { 
+  const raw = Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, input); 
+  return raw.map(b => (b + 256) % 256).map(b => b.toString(16).padStart(2,'0')).join(''); 
+  }
+
 
 function getFirstDayOfWeek(date) {
   let sdate=new Date(date)
@@ -26,8 +32,8 @@ function getFirstDayOfWeek(date) {
 }
 
 function getLastDayOfWeek(date) {
-  const last = date.getDate() - date.getDay() + 7;
-  return new Date(date.setDate(last)).toISOString().split("T")[0];
+  const last = date.getUTCDate() - date.getUTCDay() + 7;
+  return new Date(date.setUTCDate(last)).toISOString().split("T")[0];
 }
 
 function getConfig() {
@@ -43,8 +49,8 @@ function setData(sheetName, data) {
   let range
 
   if (SHEET_CONFIGS[sheetName].mode === "replace") {
-    sheet.clearContents().clearFormats()
-    range = `A3:${SHEET_CONFIGS[sheetName].e_col}${dataLength + 2}`
+    range = `A4:${SHEET_CONFIGS[sheetName].e_col}${dataLength + 3}`
+    sheet.getRange(range).clearContent().clearFormat()
   }
 
   if (SHEET_CONFIGS[sheetName].mode === "append") {

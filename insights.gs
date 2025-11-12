@@ -99,7 +99,8 @@ const parseActionsData = (data) => {
     return e.flatMap(({ actions, ...r }) => {
       return actions ? actions.map(a => {
         return [
-          r.account_id.toString(),
+          makeKey([r.account_id,r.campaign_id,r.date_start].join("-")),
+          `act_${r.account_id.toString()}`,
           r.account_name,
           r.campaign_id.toString(),
           r.campaign_name,
@@ -117,7 +118,7 @@ const parseActionsData = (data) => {
 }
 
 const setAdInsights = async (accountIds, accessToken, level, time_increment, since, until) => {
-  await Promise.all(
+  return await Promise.all(
     accountIds.map(accountId => getAdInsights(accountId, accessToken, level, time_increment, since, until))
   )
     .then(
@@ -125,7 +126,7 @@ const setAdInsights = async (accountIds, accessToken, level, time_increment, sin
 
         const aggregatedResult = data.flatMap(e => {
           return e.map(({ actions, action_values, cost_per_action_type, cost_per_unique_action_type, ...r }) => [
-            r.account_name, r.account_id.toString(), r.campaign_name, r.campaign_id.toString(), r.date_start, r.date_stop, r.clicks, r.cpc, r.cpm, r.ctr, r.impressions, r.reach, r.spend
+            makeKey([r.account_id,r.campaign_id,r.date_start].join("-")),r.account_name, `act_${r.account_id.toString()}`, r.campaign_name, r.campaign_id.toString(), r.date_start, r.date_stop, r.clicks, r.cpc, r.cpm, r.ctr, r.impressions, r.reach, r.spend
           ])
         })
 
