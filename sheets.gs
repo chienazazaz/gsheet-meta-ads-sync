@@ -16,7 +16,7 @@ const SHEET_CONFIGS = {
   "ad_action_insights": {
     "mode": "append",
     "e_col": "K",
-    unique_col: [1, 2, 3, 4, 5, 6]
+    unique_col: [1, 2, 3, 4, 5, 6,7]
   }
 }
 
