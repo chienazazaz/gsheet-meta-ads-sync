@@ -99,9 +99,9 @@ const parseActionsData = (data) => {
     return e.flatMap(({ actions, ...r }) => {
       return actions ? actions.map(a => {
         return [
-          r.account_id,
+          r.account_id.toString(),
           r.account_name,
-          r.campaign_id,
+          r.campaign_id.toString(),
           r.campaign_name,
           r.date_start,
           r.date_stop,
@@ -125,7 +125,7 @@ const setAdInsights = async (accountIds, accessToken, level, time_increment, sin
 
         const aggregatedResult = data.flatMap(e => {
           return e.map(({ actions, action_values, cost_per_action_type, cost_per_unique_action_type, ...r }) => [
-            r.account_name, r.account_id, r.campaign_name, r.campaign_id, r.date_start, r.date_stop, r.clicks, r.cpc, r.cpm, r.ctr, r.impressions, r.reach, r.spend
+            r.account_name, r.account_id.toString(), r.campaign_name, r.campaign_id.toString(), r.date_start, r.date_stop, r.clicks, r.cpc, r.cpm, r.ctr, r.impressions, r.reach, r.spend
           ])
         })
 

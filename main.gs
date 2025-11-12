@@ -8,11 +8,11 @@ async function main() {
     level = "campaign",
     time_increment = 7,
     since = getFirstDayOfWeek(config.latestDate),
-    until = getLastDayOfWeek(TODAY)
+    until = getLastDayOfWeek(new Date())
   ).then(
     (r) => {
       Logger.log(r)
-      configSheet.getRange("B8").setValue(TODAY.toISOString().split("T")[0])
+      configSheet.getRange("B8").setValue(new Date().toISOString().split("T")[0])
     }
   )
 }

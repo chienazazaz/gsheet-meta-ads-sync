@@ -1,7 +1,6 @@
 const ss = SpreadsheetApp.getActiveSpreadsheet()
 const configSheet = ss.getSheetByName("Config")
 
-const TODAY = new Date()
 const SHEET_CONFIGS = {
   "ad_accounts": {
     "mode": "replace",
@@ -21,8 +20,9 @@ const SHEET_CONFIGS = {
 }
 
 function getFirstDayOfWeek(date) {
-  const first = date.getDate() - date.getDay() + 1;
-  return new Date(date.setDate(first)).toISOString().split("T")[0];
+  let sdate=new Date(date)
+  const first = sdate.getDate() - sdate.getDay() + 1;
+  return new Date(sdate.setDate(first)).toISOString().split("T")[0];
 }
 
 function getLastDayOfWeek(date) {
@@ -52,7 +52,7 @@ function setData(sheetName, data) {
     range = `A${lastRow > 3 ? lastRow + 1 : 4}:${SHEET_CONFIGS[sheetName].e_col}${lastRow > 3 ? dataLength + lastRow : dataLength + 3}`
   }
 
-  sheet.getRange(range).setValues(data)
+  sheet.getRange(range).setValues(data).setNumberFormat("@STRING@")
   sheet.getRange("A1").setValue(new Date().toISOString())
 
   Logger.log(`Synced new data for sheet ${sheetName}. ${data.length} modified`)
